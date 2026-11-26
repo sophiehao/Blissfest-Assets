@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blissfest Pixel Tiles</title>
+  <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Blissfest Pixel Tiles</h1>
+    <p class="sub">Draw on the grid, export a vector in the tile pattern style.</p>
+  </header>
+
+  <main class="layout">
+    <!-- Tools -->
+    <section class="panel tools" aria-label="Tools">
+      <h2>Tool</h2>
+      <div class="seg" role="radiogroup" aria-label="Drawing tool">
+        <button data-tool="draw" class="on" title="Draw (B): touching pixels fuse into one shape">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="11" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="11" width="8" height="8" rx="1.5"/></svg>
+          <span>Draw</span>
+        </button>
+        <button data-tool="piece" title="Piece (P): each stroke is its own separate shape">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="9" height="9" rx="2"/><rect x="13" y="7" width="9" height="9" rx="2"/></svg>
+          <span>Piece</span>
+        </button>
+        <button data-tool="erase" title="Erase (E) — right-click also erases">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" fill="none" stroke-width="2"/><path d="M8 8l8 8M16 8l-8 8" fill="none" stroke-width="2"/></svg>
+          <span>Erase</span>
+        </button>
+      </div>
+      <p class="hint" id="toolHint">Touching pixels fuse into one shape.</p>
+
+      <h2>Mirror</h2>
+      <div class="row">
+        <label class="check"><input type="checkbox" id="mirrorX"> Left ↔ right</label>
+        <label class="check"><input type="checkbox" id="mirrorY"> Top ↕ bottom</label>
+      </div>
+
+      <h2>Colour</h2>
+      <div class="row colors">
+        <input type="color" id="color" value="#231f20" aria-label="Paint colour">
+        <div id="swatches" class="swatches"></div>
+      </div>
+
+      <h2>Grid</h2>
+      <div class="row">
+        <label class="num">W <input type="number" id="gridW" min="1" max="64" value="6"></label>
+        <label class="num">H <input type="number" id="gridH" min="1" max="64" value="6"></label>
+      </div>
+
+      <h2>Edit</h2>
+      <div class="row btns">
+        <button id="undo" title="Undo (Ctrl/⌘ Z)">Undo</button>
+        <button id="redo" title="Redo (Ctrl/⌘ Shift Z)">Redo</button>
+        <button id="invert">Invert</button>
+        <button id="clear">Clear</button>
+      </div>
+
+      <h2>Starters</h2>
+      <div id="presets" class="presets"></div>
+    </section>
+
+    <!-- Canvas -->
+    <section class="stage" aria-label="Drawing grid">
+      <div class="canvas-wrap">
+        <svg id="editor" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <label class="check showgrid"><input type="checkbox" id="showGrid" checked> Show grid</label>
+    </section>
+
+    <!-- Style + export -->
+    <section class="panel export" aria-label="Style and export">
+      <h2>Pixel style</h2>
+      <label class="slider">Corner radius <output id="radiusOut"></output>
+        <input type="range" id="radius" min="0" max="0.5" step="0.01" value="0.18"></label>
+      <label class="slider">Inner corner radius <output id="innerOut"></output>
+        <input type="range" id="innerRadius" min="0" max="0.5" step="0.01" value="0"></label>
+      <label class="slider">Gap between pieces <output id="gapOut"></output>
+        <input type="range" id="gap" min="0" max="0.4" step="0.01" value="0.1"></label>
+      <label class="slider">Inset (thinner pixels) <output id="insetOut"></output>
+        <input type="range" id="inset" min="0" max="0.3" step="0.01" value="0"></label>
+      <button id="resetStyle" class="link">Reset to Blissfest style</button>
+
+      <h2>Export</h2>
+      <label class="num wide">Pixel size (px) <input type="number" id="cellPx" min="1" max="1000" value="40"></label>
+      <label class="check"><input type="checkbox" id="crop"> Crop to drawing</label>
+      <label class="check"><input type="checkbox" id="bg"> Background
+        <input type="color" id="bgColor" value="#ffffff" aria-label="Background colour"></label>
+      <label class="num wide">File name <input type="text" id="fileName" value="blissfest-tile"></label>
+      <div class="row btns">
+        <button id="dlSvg" class="primary">Download SVG</button>
+        <button id="copySvg">Copy SVG</button>
+        <button id="dlPng">PNG</button>
+        <button id="saveJson" title="Save the editable grid as JSON">Save grid</button>
+        <label class="filebtn" title="Open a saved grid">Open grid<input type="file" id="loadJson" accept="application/json,.json"></label>
+      </div>
+      <p class="hint" id="status" role="status"></p>
+      <h2>Preview</h2>
+      <div id="preview" class="preview"></div>
+    </section>
+  </main>
+
+  <script src="src/geometry.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>
