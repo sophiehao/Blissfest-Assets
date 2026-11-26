@@ -1,0 +1,9 @@
+{
+  "name": "blissfest-assets",
+  "private": true,
+  "description": "Pixel grid drawing tool that exports Blissfest-style vector tiles",
+  "scripts": {
+    "start": "npx --yes serve .",
+    "test": "node --test"
+  }
+}
